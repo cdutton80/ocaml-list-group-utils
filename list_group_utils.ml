@@ -136,6 +136,9 @@ struct
       |> List.sort (fun ((k1, _), _) ((k2, _), _) -> sf k1 k2)
       |> List.map (fun ((_, nk), lst) -> (nk, lst |> List.sort sfi))
 
+    let group f sf sfi lst =
+      sort_base_fun f f id lst |> (fun (_, g) -> g)
+
     let group_by f sf sfi lst =
       sort_base_fun f f id sf sfi lst
       
