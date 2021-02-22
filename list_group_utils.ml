@@ -9,6 +9,11 @@ sig
     ('a -> 'b) -> ('a -> 'c) -> ('a -> 'd) -> 'a list -> ('c * 'd list) list
   
   val strip_keys : ('a * 'b) list -> 'b list
+  
+  val flat_iter_on_named_groups :
+    ('a * 'b -> unit) -> ('a * 'b list) -> unit
+  val flat_iteri_on_named_groups :
+    (int * int * 'a * 'b -> unit) -> ('a * 'b list) -> unit
    
   module Sort :
   sig
@@ -53,6 +58,14 @@ struct
   
   let strip_keys lst =
     List.map (fun (k, v) -> v) lst
+    
+  let flat_iter_on_named_groups f lst =
+    lst |> List.iter (fun (k, v) -> v |> List.iter (fun x -> f (k, x)))
+    
+  let flat_iteri_on_named_groups f lst =
+    lst |> List.iteri (fun i1 (k, v) -> v |> List.iteri (fun i2 x -> f (i1, i2, k, x)))
+
+
   
   (* Implements the real logic of the module.
   
