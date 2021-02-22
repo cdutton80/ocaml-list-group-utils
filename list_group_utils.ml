@@ -7,7 +7,9 @@ sig
     ('a -> 'b) -> ('a -> 'c) -> ('a list) -> ('c * 'a list) list
   val transformed_group_by_named : 
     ('a -> 'b) -> ('a -> 'c) -> ('a -> 'd) -> 'a list -> ('c * 'd list) list
-    
+  
+  val strip_keys : ('a * 'b) list -> 'b list
+   
   module Sort :
   sig
     val group :
