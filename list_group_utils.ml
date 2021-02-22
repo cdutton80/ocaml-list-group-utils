@@ -14,6 +14,10 @@ sig
     ('a * 'b -> unit) -> ('a * 'b list) list -> unit
   val flat_iteri_on_named_groups :
     (int * int * 'a * 'b -> unit) -> ('a * 'b list) list -> unit
+  val flat_iteri2_on_named_groups :
+    (int * int * int * 'a * 'b -> unit) -> ('a * 'b list) list -> unit
+  val flat_iterix_on_named_groups :
+    (int * 'a * 'b -> unit) -> ('a * 'b list) list -> unit
    
   module Sort :
   sig
@@ -64,6 +68,13 @@ struct
     
   let flat_iteri_on_named_groups f lst =
     lst |> List.iteri (fun i1 (k, v) -> v |> List.iteri (fun i2 x -> f (i1, i2, k, x)))
+    
+  let flat_iteri2_on_named_groups f lst =
+    let c = ref (-1) in
+    lst |> List.iteri (fun i1 (k, v) -> v |> List.iteri (fun i2 x -> c := !c + 1; f (i1, i2, !c, k, x)))
+	
+  let flat_iterix_on_named_groups f lst =
+    lst |> flat_iteri2_on_named_groups (fun (_, _, c, k, v) -> f (c, k, v))
 
 
   
