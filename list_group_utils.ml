@@ -1,4 +1,4 @@
-module List_group_utils (*:
+module List_group_utils :
 sig
   (* Values that will be available outside of the module. *)
   val group : ('a -> 'b) -> 'a list -> 'a list list
@@ -11,9 +11,9 @@ sig
   val strip_keys : ('a * 'b) list -> 'b list
   
   val flat_iter_on_named_groups :
-    ('a * 'b -> unit) -> ('a * 'b list) -> unit
+    ('a * 'b -> unit) -> ('a * 'b list) list -> unit
   val flat_iteri_on_named_groups :
-    (int * int * 'a * 'b -> unit) -> ('a * 'b list) -> unit
+    (int * int * 'a * 'b -> unit) -> ('a * 'b list) list -> unit
    
   module Sort :
   sig
@@ -41,7 +41,7 @@ sig
       ('b -> 'b -> int) ->
       ('d -> 'd -> int) -> 'a list -> ('c * 'd list) list
   end
-end *)=
+end =
 struct
   (* Implementation of the signature of this module. *)
 
