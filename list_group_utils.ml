@@ -10,6 +10,10 @@ sig
     
   module Sort :
   sig
+    val group :
+      ('a -> 'b) ->
+      ('b -> 'b -> int) ->
+      ('a -> 'a -> int) -> 'a list -> 'a list list
     val group_by :
       ('a -> 'b) ->
       ('b -> 'b -> int) ->
@@ -40,6 +44,9 @@ struct
      function. In some cases, we simply pass an identity function instead of a 
      meaningful one. *)
   let id x = x
+  
+  let strip_keys lst =
+    List.map (fun (k, v) -> v) lst
   
   (* Implements the real logic of the module.
   
