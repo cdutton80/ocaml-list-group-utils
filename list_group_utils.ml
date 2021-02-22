@@ -153,7 +153,7 @@ struct
       sort_base_fun f f id lst |> strip_keys
       
     let flat_group f sf sfi lst =
-      lst |> group f sf sfi |> List.fold_left append []
+      lst |> group f sf sfi |> List.flatten
 
     let group_by f sf sfi lst =
       sort_base_fun f f id sf sfi lst
