@@ -1,4 +1,4 @@
-module List_group_utils :
+module List_group_utils (*:
 sig
   (* Values that will be available outside of the module. *)
   val group : ('a -> 'b) -> 'a list -> 'a list list
@@ -41,7 +41,7 @@ sig
       ('b -> 'b -> int) ->
       ('d -> 'd -> int) -> 'a list -> ('c * 'd list) list
   end
-end =
+end *)=
 struct
   (* Implementation of the signature of this module. *)
 
@@ -114,7 +114,7 @@ struct
                  
   (* No group names. The list map removes the group name part of the tuple. *)
   let group f lst =
-    lst |> base_fun f f id |> strip_keys 
+    lst |> base_fun f f id |> strip_keys
     
   (* No special naming function. *)
   let group_by f lst =
@@ -163,7 +163,7 @@ struct
       |> List.map (fun ((_, nk), lst) -> (nk, lst |> List.sort sfi))
 
     let group f sf sfi lst =
-      sort_base_fun f f id lst |> strip_keys
+      sort_base_fun f f id sf sfi lst |> strip_keys
       
     let flat_group f sf sfi lst =
       lst |> group f sf sfi |> List.flatten
