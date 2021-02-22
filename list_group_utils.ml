@@ -95,7 +95,7 @@ struct
                  
   (* No group names. The list map removes the group name part of the tuple. *)
   let group f lst =
-    lst |> base_fun f f id |> List.map (fun (_, g) -> g) 
+    lst |> base_fun f f id |> strip_keys 
     
   (* No special naming function. *)
   let group_by f lst =
@@ -144,7 +144,7 @@ struct
       |> List.map (fun ((_, nk), lst) -> (nk, lst |> List.sort sfi))
 
     let group f sf sfi lst =
-      sort_base_fun f f id lst |> (fun (_, g) -> g)
+      sort_base_fun f f id lst |> strip_keys
 
     let group_by f sf sfi lst =
       sort_base_fun f f id sf sfi lst
