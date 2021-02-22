@@ -16,6 +16,10 @@ sig
       ('a -> 'b) ->
       ('b -> 'b -> int) ->
       ('a -> 'a -> int) -> 'a list -> 'a list list
+    val flat_group : 
+      ('a -> 'b) ->
+      ('b -> 'b -> int) ->
+      ('a -> 'a -> int) -> 'a list -> 'a list
     val group_by :
       ('a -> 'b) ->
       ('b -> 'b -> int) ->
@@ -147,6 +151,9 @@ struct
 
     let group f sf sfi lst =
       sort_base_fun f f id lst |> strip_keys
+      
+    let flat_group f sf sfi lst =
+      lst |> group f sf sfi |> List.fold_left append []
 
     let group_by f sf sfi lst =
       sort_base_fun f f id sf sfi lst
