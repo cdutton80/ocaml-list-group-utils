@@ -49,7 +49,7 @@ struct
     let flat_group f sfs sfis lst =
       lst |> group f sfs sfis |> List.flatten
       
-    let group_by f lst sfs sfis =
+    let group_by f sfs sfis lst =
       lst |> sortx_base_fun f f id sfs sfis
       
     let group_by_named f nf lst sfs sfis lst =
