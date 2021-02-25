@@ -14,9 +14,10 @@ struct
   let strip_keys lst =
     List.map (fun (k, v) -> v) lst
     
-  type ('a, 'b) name_key_type = 
+  type ('a, 'b, 'c) name_key_type = 
   | Same_as_key
   | Name_key of ('a -> 'b)
+  | Modified_key of ('b -> 'c)
     
   module Sort =
   struct
@@ -71,7 +72,8 @@ struct
         key 
         (match name_key with 
          | Same_as_key -> key 
-         | Name_key f -> f)
+         | Name_key f -> f
+         | Modified_key f -> (fun x -> f (key x)))
         item_transform 
         key_sort 
         item_sort 
@@ -146,5 +148,5 @@ struct
     
   (* Exposes the full functionality of the module. *)
   let transformed_group_by_named =
-    base_fun    
+    base_fun
 end
