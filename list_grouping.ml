@@ -37,7 +37,7 @@ struct
           let group_ht = base_fun' f nf lst in
       let raw_results = 
         Hashtbl.fold 
-          (fun (k, nk) v acc -> ((k, nk), !v |> List.map tf) :: acc) 
+          (fun (k, nk) v acc -> ((k, nk), !v) :: acc) 
           group_ht 
           []
       in
@@ -46,7 +46,7 @@ struct
              (fun results f -> results |> List.sort (fun ((k1, _), _) ((k2, _), _) ->  f k1 k2))
              raw_results
         |> List.map (fun ((_, nk), lst) -> (nk, lst))
-        |> List.map (fun (nk, g) -> (nk, sfis |> List.fold_left (fun acc f -> List.sort f acc) g))
+        |> List.map (fun (nk, g) -> (nk, sfis |> List.fold_left (fun acc f -> List.sort f acc) g |> List.map tf))
         
     let group f sfs sfis lst =
       lst |> sort_base_fun f f id sfs sfis |> strip_keys
