@@ -18,16 +18,21 @@ struct
   | Same_as_key
   | Name_key of ('a -> 'b)
   | Modified_key of ('b -> 'c)
+  
+  type ('a, 'b) key_type =
+  | Basic_key of ('a -> 'b)
+  | Sorted_key of { key : ('a -> 'b); compare : ('b -> 'b -> int) }
     
   module Sort =
   struct
     let sort_base_fun f nf tf sfs sfis lst =
-      let ht = Hashtbl.create 123456 in
+	  let ht = Hashtbl.create 123456 in
       let rec base_fun' f nf lst =
         match lst with
         | [] -> ht
         | x :: xs ->
-          let key = (f x, nf x) in
+          let key = (f x, nf x)
+          in
           (try
              let v = Hashtbl.find ht key in
              v.contents <- List.append v.contents [x]
@@ -68,14 +73,20 @@ struct
   struct
     let transformed_group_by_named 
       ~key ~name_key ~item_transform ~key_sort ~item_sort ~items =
+	  let stripped_key = 
+	    (match key with
+		 | Basic_key k
+		 | Sorted_key { key=k; _ } -> k) in
       Sort.transformed_group_by_named 
-        key 
+        stripped_key
         (match name_key with 
-         | Same_as_key -> key 
+         | Same_as_key -> stripped_key 
          | Name_key f -> f
-         | Modified_key f -> (fun x -> f (key x)))
+         | Modified_key f -> (fun x -> f (stripped_key x)))
         item_transform 
-        key_sort 
+        (match key with
+		 | Basic_key k -> key_sort
+         | Sorted_key { compare=c; _ } -> c :: key_sort)
         item_sort 
         items
         
@@ -127,7 +138,6 @@ struct
       lst |> flat_iteri2_on_named_groups (fun (_, _, c, k, v) -> f (c, k, v))
   end
 
-  
   let base_fun f nf tf lst =
     Sort.sort_base_fun f nf tf [] [] lst 
                  
@@ -149,4 +159,5 @@ struct
   (* Exposes the full functionality of the module. *)
   let transformed_group_by_named =
     base_fun
+
 end
